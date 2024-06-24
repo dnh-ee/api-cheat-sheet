@@ -13,13 +13,15 @@ See also: [Platform Building Cheat Sheet](https://github.com/RestCheatSheet/plat
     * Use plural forms (‘orders’ instead of ‘order’).
     * Alternate resource names with IDs as URL nodes (e.g. /orders/{orderId}/items/{itemId})
     * Keep URLs as short as possible. Preferably, no more-than three nodes per URL.
+    * Use `-` as the separator for compound names
 
 1. Use nouns as resource names (e.g. don’t use verbs in URLs).
 
 1. Make resource representations meaningful.
-    * “No Naked IDs!” No plain IDs embedded in responses. Use links and reference objects.
+    * Inside aggregate boundaries: “No Naked IDs!” No plain IDs embedded in responses. Use links and reference objects. 
     * Design resource representations. Don’t simply represent database tables.
     * Merge representations. Don’t expose relationship tables as two IDs.
+    * Avoid deep nesting of sub-resources when sub-resource id is unique in its own right
 
 1. Support filtering, sorting, and pagination on collections.
 
@@ -41,12 +43,6 @@ See also: [Platform Building Cheat Sheet](https://github.com/RestCheatSheet/plat
     * 409 - Conflict. Duplicate data or invalid data state would occur.
 
 1. Use ISO 8601 timepoint formats for dates in representations.
-
-1. Consider connectedness by utilizing a linking strategy. Some popular examples are:
-    * [HAL](http://stateless.co/hal_specification.html)
-    * [Siren](https://github.com/kevinswiber/siren)
-    * [JSON-LD](http://json-ld.org/)
-    * [Collection+JSON](http://amundsen.com/media-types/collection/)
 
 1. Use [OAuth2](http://oauth.net/2/) to secure your API.
     * Use a Bearer token for authentication.
