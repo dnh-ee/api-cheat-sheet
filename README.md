@@ -11,7 +11,7 @@
     * Use plural forms (‘orders’ instead of ‘order’).
     * Alternate resource names with IDs as URL nodes (e.g. /orders/{orderId}/items/{itemId})
     * Keep URLs as short as possible. Preferably, no more-than three nodes per URL.
-    * Use `-` as the separator for compound names[^mark-masse-ch2]
+    * Use `-` as the separator for path compound name components[^mark-masse-ch2]
 
 1. Use nouns as resource names (e.g. don’t use verbs in URLs).
 
@@ -32,12 +32,24 @@
     * GET - read a resource or collection.
     * DELETE - remove a resource or collection.
 
-1. Use HTTP status codes to be meaningful.
-    * 200 - Success.
-    * 201 - Created. Returned on successful creation of a new resource. Include a 'Location' header with a link to the newly-created resource.
-    * 400 - Bad request. Data issues such as invalid JSON, etc.
-    * 404 - Not found. Resource not found on GET.
-    * 409 - Conflict. Duplicate data or invalid data state would occur.
+1. Use HTTP status codes to be meaningful.[^http-status-code]
+    * Success -
+       * 200 - Request processing completed successfully. Do not use for failures.
+       * 201 - Created. Returned on successful creation of a new resource. Include a 'Location' header with a link to the newly-created resource.
+    * Client-responsible failures -
+       * 400 - Bad request. Either
+          * Badly structured request (does not conform to schema)
+          * Invalid request data within well-structured request
+       * Not Found
+          * 404 - Not found. Resource may be available at a future date
+          * 410 - Gone. Resource permanently deleted and will not return (**cacheable**)
+    * Inconsistent client and service state -
+       * 409 - Conflict. Duplicates existing data record, violates some unique key constraint, or is otherwise incompatible with existing service state.
+    * Service Error -
+       * 500 - either a `Logical Failure` or `Unexpected Error` encountered in the service state during processing
+    * Upstream Dependency Error -
+       * 502 - Error received from upstream system. May be 4xx or 5xx response or 2xx with invalid data
+       * 504 - Upstream dependency unavailable
 
 1. Use ISO 8601 timepoint formats for dates in representations.
 
@@ -73,4 +85,5 @@
 1. Ensure that your GET, PUT, and DELETE operations are all [idempotent](http://www.restapitutorial.com/lessons/idempotency.html).  There should be no adverse side affects from operations.
 
 
-[^mark-masse-ch2]: Mark Masse REST API Design Rulebook (Ch.2 Identifier Design with URIs)
+[^mark-masse-ch2]: [Mark Masse REST API Design Rulebook](https://www.oreilly.com/library/view/rest-api-design/9781449317904/index.html) (Ch.2 Identifier Design with URIs)
+[^http-status-code]: [Codetinkerer: Choosing an HTTP Status Code](https://www.codetinkerer.com/2015/12/04/choosing-an-http-status-code.html)
