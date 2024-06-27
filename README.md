@@ -8,18 +8,29 @@
     * Two URLs (endpoints) per resource:
         * The resource collection (e.g. /orders)
         * Individual resource within the collection (e.g. /orders/{orderId}).
-    * Use plural forms (‘orders’ instead of ‘order’).
+    * Use plural forms (‘orders’ instead of ‘order’).[^how-to-design-rest-apis]
     * Alternate resource names with IDs as URL nodes (e.g. /orders/{orderId}/items/{itemId})
-    * Keep URLs as short as possible. Preferably, no more-than three nodes per URL.
+    * Keep URLs as short as possible. Preferably, no more-than three nodes per URL. In particular avoid nesting of sub-resources when sub-resource can be exposed as a top-level entity in its own right (has globally unique Id of its own).[^how-to-design-rest-apis] 
     * Use `-` as the separator for path compound name components[^mark-masse-ch2]
+    * Clean URLs (don't add `.json` or other extensions)[^how-to-design-rest-apis]
 
 1. Use nouns as resource names (e.g. don’t use verbs in URLs).
 
+1. Return decorated responses (i.e. no naked objects, arrays or maps). Consider using `data` as the top-level data obejct for successful responses.[^how-to-design-rest-apis]
+   
 1. Make resource representations meaningful.
     * Design resource representations. Don’t simply represent database tables.
     * Merge representations. Don’t expose relationship tables as two IDs.
-    * Avoid deep nesting of sub-resources when sub-resource id is unique in its own right
 
+1. For identifiers
+   * Use strings for all identifier data.[^how-to-design-rest-apis]
+   * Prefix identifiers by type [^how-to-design-rest-apis]
+
+1. Use structured error format[^rcf9457]
+   * Support RCF9457
+   * For all `Logical Errors` (business errors) define error definition for each, either as unique description pages, or as tag URIs
+   * For `Unexpected Errors` define small number of catch-all definitions (resource unavailable, unexpected data, panic, etc)
+     
 1. Support filtering, sorting, and pagination on collections.
 
 1. Support link expansion of relationships. Allow clients to expand the data contained in the response by including additional representations instead of, or in addition to, links.
@@ -86,4 +97,6 @@
 
 
 [^mark-masse-ch2]: [Mark Masse REST API Design Rulebook](https://www.oreilly.com/library/view/rest-api-design/9781449317904/index.html) (Ch.2 Identifier Design with URIs)
-[^http-status-code]: [Codetinkerer: Choosing an HTTP Status Code](https://www.codetinkerer.com/2015/12/04/choosing-an-http-status-code.html)
+[^http-status-code]: [Michael Kropat: Choosing an HTTP Status Code](https://www.codetinkerer.com/2015/12/04/choosing-an-http-status-code.html)
+[^how-to-design-rest-apis]: [Jeff Schnitzer: How to (and how not to) design REST APIs](https://github.com/stickfigure/blog/wiki/How-to-(and-how-not-to)-design-REST-APIs)
+[^rcf9457]: [IETF / M. Nottingham - Problem Details for HTTP APIs](https://datatracker.ietf.org/doc/html/rfc9457)
