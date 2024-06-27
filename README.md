@@ -1,5 +1,3 @@
-See also: [Platform Building Cheat Sheet](https://github.com/RestCheatSheet/platform-cheat-sheet#platform-building-cheat-sheet)
-
 # API Design Cheat Sheet
 1. Build the API with consumers in mind--as a product in its own right.
     * Not for a specific UI.
@@ -13,12 +11,11 @@ See also: [Platform Building Cheat Sheet](https://github.com/RestCheatSheet/plat
     * Use plural forms (‘orders’ instead of ‘order’).
     * Alternate resource names with IDs as URL nodes (e.g. /orders/{orderId}/items/{itemId})
     * Keep URLs as short as possible. Preferably, no more-than three nodes per URL.
-    * Use `-` as the separator for compound names
+    * Use `-` as the separator for compound names[^mark-masse-ch2]
 
 1. Use nouns as resource names (e.g. don’t use verbs in URLs).
 
 1. Make resource representations meaningful.
-    * Inside aggregate boundaries: “No Naked IDs!” No plain IDs embedded in responses. Use links and reference objects. 
     * Design resource representations. Don’t simply represent database tables.
     * Merge representations. Don’t expose relationship tables as two IDs.
     * Avoid deep nesting of sub-resources when sub-resource id is unique in its own right
@@ -74,3 +71,6 @@ See also: [Platform Building Cheat Sheet](https://github.com/RestCheatSheet/plat
     * Last-Modified - The timestamp that the resource itself was modified last (in RFC1123 format). (ex: Last-Modified: Sun, 06 Nov 1994 08:49:37 GMT)
 
 1. Ensure that your GET, PUT, and DELETE operations are all [idempotent](http://www.restapitutorial.com/lessons/idempotency.html).  There should be no adverse side affects from operations.
+
+
+[^mark-masse-ch2]: Mark Masse REST API Design Rulebook (Ch.2 Identifier Design with URIs)
