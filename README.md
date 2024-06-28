@@ -1,8 +1,9 @@
 # API Design Cheat Sheet
 1. Build the API with consumers in mind--as a product in its own right.
     * Not for a specific UI.
-    * Embrace flexibility / tunability of each endpoint (see #5, 6 & 7).
+    * Embrace flexibility / tunability of each endpoint (see #5, 8, 9, 10).
     * Eat your own dogfood, even if you have to mockup an example UI.
+    * Model everything as a resource, even processes: creating an ID for a process allows for easy transition to async processing, and supports easy auditing, observability
 
 1. Use the Collection Metaphor.
     * Two URLs (endpoints) per resource:
@@ -16,14 +17,17 @@
 
 1. Use nouns as resource names (e.g. don’t use verbs in URLs).
 
-1. Return decorated responses (i.e. no naked objects, arrays or maps). Consider using `data` as the top-level data obejct for successful responses.[^how-to-design-rest-apis]
+1. Return decorated responses (i.e. no naked objects, arrays or maps).
+    * Use `data` as the top-level data object for successful responses.[^how-to-design-rest-apis]
    
 1. Make resource representations meaningful.
+    * Prefer resource links over entity IDs
     * Design resource representations. Don’t simply represent database tables.
     * Merge representations. Don’t expose relationship tables as two IDs.
 
-1. For identifiers
+1. Identifier design.
    * Use strings for all identifier data.[^how-to-design-rest-apis]
+   * Avoid sequential, scrapeable Ids [^build-apis-you-wont-hate]
    * Prefix identifiers by type [^how-to-design-rest-apis]
 
 1. Use structured error format[^rcf9457]
@@ -43,10 +47,11 @@
     * GET - read a resource or collection.
     * DELETE - remove a resource or collection.
 
-1. Use HTTP status codes to be meaningful.[^http-status-code]
+1. Use HTTP status codes to be meaningful.[^http-status-code][^rest-api-tutorial]
     * Success -
        * 200 - Request processing completed successfully. Do not use for failures.
        * 201 - Created. Returned on successful creation of a new resource. Include a 'Location' header with a link to the newly-created resource.
+       * 202 - Accepted, asynchronous processing
     * Client-responsible failures -
        * 400 - Bad request. Either
           * Badly structured request (does not conform to schema)
@@ -54,8 +59,15 @@
        * Not Found
           * 404 - Not found. Resource may be available at a future date
           * 410 - Gone. Resource permanently deleted and will not return (**cacheable**)
-    * Inconsistent client and service state -
-       * 409 - Conflict. Duplicates existing data record, violates some unique key constraint, or is otherwise incompatible with existing service state.
+       * Security Problem
+          * 401 - Unauthorised. Client should authenticate and retry.
+          * 403 - Forbidden. User is not permitted to access resource. Authenticating will make no difference.
+       * Inconsistent client and service state -
+          * 409 - Conflict. Duplicates existing data record, violates some unique key constraint, or is otherwise incompatible with existing service state.
+       * Request Semantics Issues
+          * 405, 415
+       * Backpressure
+          * 429 - Rate limited.    
     * Service Error -
        * 500 - either a `Logical Failure` or `Unexpected Error` encountered in the service state during processing
     * Upstream Dependency Error -
@@ -63,6 +75,7 @@
        * 504 - Upstream dependency unavailable
 
 1. Use ISO 8601 timepoint formats for dates in representations.
+    * [^how-to-design-rest-apis]
 
 1. Use [OAuth2](http://oauth.net/2/) to secure your API.
     * Use a Bearer token for authentication.
@@ -100,3 +113,5 @@
 [^http-status-code]: [Michael Kropat: Choosing an HTTP Status Code](https://www.codetinkerer.com/2015/12/04/choosing-an-http-status-code.html)
 [^how-to-design-rest-apis]: [Jeff Schnitzer: How to (and how not to) design REST APIs](https://github.com/stickfigure/blog/wiki/How-to-(and-how-not-to)-design-REST-APIs)
 [^rcf9457]: [IETF / M. Nottingham - Problem Details for HTTP APIs](https://datatracker.ietf.org/doc/html/rfc9457)
+[^build-apis-you-wont-hate]: [Phil Sturgeon - Build APIs You Won't Hate](https://leanpub.com/build-apis-you-wont-hate)
+[^rest-api-tutorial]: [Todd Fredrich - REST API Tutorial](https://www.restapitutorial.com/)
