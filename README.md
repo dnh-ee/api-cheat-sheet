@@ -75,7 +75,7 @@
        * 504 - Upstream dependency unavailable
 
 1. Use ISO 8601 timepoint formats for dates in representations.
-    * [^how-to-design-rest-apis]
+    * Don't trust platform/language defaults[^how-to-design-rest-apis]
 
 1. Use [OAuth2](http://oauth.net/2/) to secure your API.
     * Use a Bearer token for authentication.
