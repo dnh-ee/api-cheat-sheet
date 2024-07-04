@@ -69,7 +69,7 @@
        * Inconsistent client and service state -
           * 409 - Conflict. Duplicates existing data record, violates some unique key constraint, or is otherwise incompatible with existing service state.
        * Request Semantics Issues
-          * 405, 415
+          * 405, 406, 415 Method and Content negotiation problems
        * Backpressure
           * 429 - Rate limited.    
     * Service Error -
