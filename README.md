@@ -32,7 +32,7 @@
 
 1. Use structured error format[^rcf9457]
    * Support RCF9457, particularly the `type` field with should link to unique identifier for that error 
-   * For all `Logical Errors` (business errors) define error definition for each, either as unique description pages, or as tag URIs
+   * For all `Logical Failures` (business errors) define error definition for each, either as unique description pages, or as tag URIs
    * For `Unexpected Errors` define small number of catch-all definitions (resource unavailable, unexpected data, panic, etc)
    * To disambiguate certain Status Code responses, e.g.:
       * 404 Valid endpoint but Not Found vs Invalid endpoint
