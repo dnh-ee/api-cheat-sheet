@@ -34,6 +34,8 @@
    * Support RCF9457
    * For all `Logical Errors` (business errors) define error definition for each, either as unique description pages, or as tag URIs
    * For `Unexpected Errors` define small number of catch-all definitions (resource unavailable, unexpected data, panic, etc)
+   * To disambiguate certail Status Code responses, e.g.:
+      * 404 Valid endpoint but Not Found vs Invalid endpoint
      
 1. Support filtering, sorting, and pagination on collections.
 
@@ -72,7 +74,7 @@
           * 429 - Rate limited.    
     * Service Error -
        * 500 - either a `Logical Failure` or `Unexpected Error` encountered in the service state during processing
-    * Upstream Dependency Error -
+    * Upstream Dependency Error (generally of the `Unexpected Error` category) -
        * 502 - Error received from upstream system. May be 4xx or 5xx response or 2xx with invalid data
        * 504 - Upstream dependency unavailable
 
