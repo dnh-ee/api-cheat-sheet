@@ -31,10 +31,10 @@
    * Prefix identifiers by type [^how-to-design-rest-apis]
 
 1. Use structured error format[^rcf9457]
-   * Support RCF9457
+   * Support RCF9457, particularly the `type` field with should link to unique identifier for that error 
    * For all `Logical Errors` (business errors) define error definition for each, either as unique description pages, or as tag URIs
    * For `Unexpected Errors` define small number of catch-all definitions (resource unavailable, unexpected data, panic, etc)
-   * To disambiguate certail Status Code responses, e.g.:
+   * To disambiguate certain Status Code responses, e.g.:
       * 404 Valid endpoint but Not Found vs Invalid endpoint
      
 1. Support filtering, sorting, and pagination on collections.
@@ -53,30 +53,29 @@
 
 1. Use HTTP status codes to be meaningful.[^http-status-code][^rest-api-tutorial]
     * Success -
-       * 200 - Request processing completed successfully. Do not use for failures.
-       * 201 - Created. Returned on successful creation of a new resource. Include a 'Location' header with a link to the newly-created resource.
-       * 202 - Accepted, asynchronous processing
+       * `200` - Request processing completed successfully. Do not use for failures.
+       * `201` - Created. Returned on successful creation of a new resource. Include a 'Location' header with a link to the newly-created resource.
+       * `202` - Accepted, asynchronous processing
     * Client-responsible failures -
-       * 400 - Bad request. Either
-          * Badly structured request (does not conform to schema)
-          * Invalid request data within well-structured request
+       * `400` - Bad request. Badly structured request (does not conform to schema)
+       * `422` - Invalid request data within well-structured request
        * Not Found
-          * 404 - Not found. Resource may be available at a future date
-          * 410 - Gone. Resource permanently deleted and will not return (**cacheable**)
+          * `404` - Not found. Resource may be available at a future date
+          * `410` - Gone. Resource permanently deleted and will not return (**cacheable**)
        * Security Problem
-          * 401 - Unauthorised. Client should authenticate and retry.
-          * 403 - Forbidden. User is not permitted to access resource. Authenticating will make no difference.
+          * `401` - Unauthorised. Client should authenticate and retry.
+          * `403` - Forbidden. User is not permitted to access resource. Authenticating will make no difference.
        * Inconsistent client and service state -
-          * 409 - Conflict. Duplicates existing data record, violates some unique key constraint, or is otherwise incompatible with existing service state.
+          * `409` - Conflict. Duplicates existing data record, violates some unique key constraint, or is otherwise incompatible with existing service state.
        * Request Semantics Issues
-          * 405, 406, 415 Method and Content negotiation problems
+          * `405`, `406`, `415` Method and Content negotiation problems
        * Backpressure
-          * 429 - Rate limited.    
+          * `429` - Rate limited.    
     * Service Error -
-       * 500 - either a `Logical Failure` or `Unexpected Error` encountered in the service state during processing
+       * `500` - either a `Logical Failure` or `Unexpected Error` encountered in the service state during processing
     * Upstream Dependency Error (generally of the `Unexpected Error` category) -
-       * 502 - Error received from upstream system. May be 4xx or 5xx response or 2xx with invalid data
-       * 504 - Upstream dependency unavailable
+       * `502` - Error received from upstream system. May be 4xx or 5xx response or 2xx with invalid data
+       * `504` - Upstream dependency unavailable
 
 1. Use ISO 8601 timepoint formats for dates in representations.
     * Don't trust platform/language defaults[^how-to-design-rest-apis]
